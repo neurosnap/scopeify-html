@@ -19,7 +19,7 @@
   "author": "Eric Bower",
   "license": "MIT",
   "dependencies": {
-    "postcss-scopeify-everything": "0.1.0"
+    "postcss-scopeify-everything": "0.1.2"
   },
   "devDependencies": {
     "eslint": "^3.4.0",
@@ -27,6 +27,7 @@
     "eslint-plugin-import": "^1.14.0",
     "js-beautify": "^1.6.4",
     "jsdom": "^9.4.2",
+    "postcss": "^5.2.4",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.0"
   }

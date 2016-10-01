@@ -1,6 +1,6 @@
 'use strict';
 
-const pse = require('../postcss-scopeify-everything');
+const pse = require('postcss-scopeify-everything');
 
 module.exports = scopeifyHtml;
 module.exports.extractCss = extractCss;
