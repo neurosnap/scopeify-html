@@ -16,6 +16,8 @@ function scopeifyHtml(opts) {
 
 function scopeifyFn(scopeify, doc) {
   const css = extractCss(doc);
+  if (!css) return null;
+
   const scoped = scopeify(css).sync();
 
   const elements = doc.getElementsByTagName('*');

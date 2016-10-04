@@ -16,6 +16,7 @@ const fixtures = [
   'gog.html',
   'readme_ex.html',
   'apple.html',
+  'costco.html',
 ];
 
 test('emails', t => {
@@ -26,6 +27,8 @@ test('emails', t => {
 
     const expectedDoc = jsdom(html);
     const expectedCss = extractCss(expectedDoc);
+
+    if (!expectedCss) return;
 
     insertCss(expectedCss, expectedDoc);
     insertCss(getCss(scopedSelectorMap), actualDoc);

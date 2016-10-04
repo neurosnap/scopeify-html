@@ -3,7 +3,21 @@ Scopeify HTML
 
 The goal of this library is to scope all CSS selectors in an HTML document.
 
-This goal is accomplished by doing the following:
+Features
+--------
+
+* Every CSS selector is scoped
+* Media queries are preserved
+* Fonts are preserved
+* Keyframes are preserved
+* Can use PostCSS plugins to modify all extracted CSS
+
+How it works
+------------
+
+We iterate over all the CSS rules within an HTML document and scope all of them.  Then we iterate
+over all the DOM elements in the document and apply the newly scoped selectors.  Then we return the
+document and the CSS separated.
 
 * Scope CSS by converting the following selectors and names in the HTML document:
   * Convert HTML elements into scoped classes,
@@ -47,7 +61,7 @@ const html = `
 const parser = new DOMParser();
 const doc = parser.parseFromString(html, "text/html");
 
-const scoped = scopeifyHtml(doc);
+const scoped = scopeifyHtml()(doc);
 console.log(scoped);
 /*
 {
@@ -89,3 +103,16 @@ console.log(doc.documentElement.outerHTML);
 </html>
 */
 ```
+
+Perf
+----
+
+All speeds are measured in milliseconds (ms).
+
+fixture        | scopeify-html | juice   |
+---------------|---------------|---------|
+zillow.html    | 45.784        | 113.385 |
+gog.html       | 52.943        | 113.725 |
+readme_ex.html | 1.400         | 1.595   |
+apple.html     | 55.115        | 38.543  |
+costco.html    | 1.193         | 0.531   |
