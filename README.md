@@ -61,7 +61,7 @@ const html = `
 const parser = new DOMParser();
 const doc = parser.parseFromString(html, "text/html");
 
-const scoped = scopeifyHtml()(doc);
+const scoped = scopeifyHtml().sync(doc);
 console.log(scoped);
 /*
 {
