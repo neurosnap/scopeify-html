@@ -17,13 +17,14 @@ const fixtures = [
   'readme_ex.html',
   'apple.html',
   'costco.html',
+  'sentry.html',
 ];
 
 test('emails', t => {
   fixtures.forEach(fname => {
     const html = fs.readFileSync(`./fixtures/${fname}`);
     const actualDoc = jsdom(html);
-    const scopedSelectorMap = scopeifyHtml()(actualDoc);
+    const scopedSelectorMap = scopeifyHtml().sync(actualDoc);
 
     const expectedDoc = jsdom(html);
     const expectedCss = extractCss(expectedDoc);
@@ -35,6 +36,28 @@ test('emails', t => {
 
     compare(t, actualDoc, expectedDoc, scopedSelectorMap);
     saveFile(fname, actualDoc);
+  });
+
+  t.end();
+});
+
+test('emails async', t => {
+  fixtures.forEach(fname => {
+    const html = fs.readFileSync(`./fixtures/${fname}`);
+    const actualDoc = jsdom(html);
+    scopeifyHtml().promise(actualDoc).then(scopedSelectorMap => {
+      if (!scopedSelectorMap) return;
+
+      const expectedDoc = jsdom(html);
+      const expectedCss = extractCss(expectedDoc);
+
+      if (!expectedCss) return;
+
+      insertCss(expectedCss, expectedDoc);
+      insertCss(getCss(scopedSelectorMap), actualDoc);
+
+      compare(t, actualDoc, expectedDoc, scopedSelectorMap);
+    }).catch(err => { console.error(err); });
   });
 
   t.end();

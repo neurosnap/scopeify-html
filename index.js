@@ -11,22 +11,39 @@ function scopeifyHtml(opts) {
   opts = opts || {};
   const scopeify = pse.api(opts);
 
-  return scopeifyFn.bind(this, scopeify);
+  return {
+    sync: scopeifyFnSync.bind(this, scopeify, opts),
+    promise: scopeifyFnPromise.bind(this, scopeify, opts),
+  };
 }
 
-function scopeifyFn(scopeify, doc) {
+function scopeifyFnSync(scopeify, opts, doc) {
   const css = extractCss(doc);
   if (!css) return null;
 
   const scoped = scopeify(css).sync();
-
-  const elements = doc.getElementsByTagName('*');
-  for (let i = 0; i < elements.length; i++) {
-    const el = elements[i];
-    replaceSelectors(el, scoped);
-  }
-
+  iterateDom(doc, opts, scoped);
   return scoped;
+}
+
+function scopeifyFnPromise(scopeify, opts, doc) {
+  const css = extractCss(doc);
+  if (!css) return Promise.resolve(null);
+
+  return scopeify(css)
+    .promise()
+    .then(function iterateDomPromise(scoped) {
+      return new Promise(function iterateDomPromiseResolve(resolve, reject) {
+        try {
+          iterateDom(doc, opts, scoped);
+        } catch (err) {
+          reject(err);
+        }
+
+        resolve(scoped);
+      });
+    })
+    .catch(function iterateDomCatch(err) { console.error(err); });
 }
 
 function extractCss(doc) {
@@ -58,16 +75,31 @@ function insertCss(css, doc, container) {
   return style;
 }
 
-function replaceSelectors(el, scoped) {
+function iterateDom(doc, opts, scoped) {
+  const elements = doc.getElementsByTagName('*');
+  for (let i = 0; i < elements.length; i++) {
+    const el = elements[i];
+    replaceSelectors(el, scoped, opts.replaceClassName);
+  }
+}
+
+function replaceSelectors(el, scoped, replaceClassName) {
+  if (typeof replaceClassName === 'undefined') replaceClassName = false;
   const name = el.tagName.toLowerCase();
   const style = el.getAttribute('style');
 
+  const newClasses = [];
   Object.keys(scoped.classes).forEach(function walkClass(scopeClass) {
     if (el.classList.contains(scopeClass)) {
-      el.classList.remove(scopeClass);
-      el.classList.add(scoped.classes[scopeClass]);
+      if (replaceClassName) {
+        newClasses.push(scoped.classes[scopeClass]);
+      } else {
+        el.classList.remove(scopeClass);
+        el.classList.add(scoped.classes[scopeClass]);
+      }
     }
   });
+  if (replaceClassName) el.className = newClasses.join(' ');
 
   Object.keys(scoped.elements).forEach(function walkEl(scopeEl) {
     if (scopeEl === name || scopeEl === '*') {

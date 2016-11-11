@@ -12,6 +12,7 @@ const fixtures = [
   'readme_ex.html',
   'apple.html',
   'costco.html',
+  'sentry.html',
 ];
 
 fixtures.forEach(fname => {
@@ -23,7 +24,7 @@ fixtures.forEach(fname => {
   const scopeifyId = `scopeify-html ${fname}`;
   const doc = jsdom(html);
   console.time(scopeifyId);
-  scopeifyHtml()(doc);
+  scopeifyHtml().sync(doc);
   console.timeEnd(scopeifyId);
 
   const juiceId = `juice ${fname}`;
