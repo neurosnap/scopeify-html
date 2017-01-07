@@ -1,1 +1,2 @@
 *.html export-ignore
+*.html linguist-vendored

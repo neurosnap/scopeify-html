@@ -1,6 +1,6 @@
 {
   "name": "scopeify-html",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Scopeify CSS in HTML",
   "main": "index.js",
   "repository": "git@github.com:neurosnap/scopeify-email.git",
@@ -19,7 +19,7 @@
   "author": "Eric Bower",
   "license": "MIT",
   "dependencies": {
-    "postcss-scopeify-everything": "0.1.2"
+    "postcss-scopeify-everything": "^0.2.0"
   },
   "devDependencies": {
     "cheerio": "^0.20.0",

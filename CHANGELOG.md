@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.3.0 (01-07-2016)
+------------------
+
+* :sparkles: Upgraded `postcss-scopeify-everything` to better handle CSS syntax errors
+
 0.2.0
 -----
 
