@@ -1,6 +1,6 @@
 'use strict';
 
-const pse = require('postcss-scopeify-everything');
+const pse = require('../postcss-scopeify-everything');
 
 module.exports = scopeifyHtml;
 module.exports.extractCss = extractCss;
@@ -21,8 +21,16 @@ function scopeifyFnSync(scopeify, opts, doc) {
   const css = extractCss(doc);
   if (!css) return null;
 
-  const scoped = scopeify(css).sync();
-  iterateDom(doc, opts, scoped);
+  let scoped = emptyScoped();
+
+  try {
+    scoped = scopeify(css).sync();
+  } catch (err) {
+    throw err;
+  } finally {
+    iterateDom(doc, opts, scoped);
+  }
+
   return scoped;
 }
 
@@ -43,7 +51,10 @@ function scopeifyFnPromise(scopeify, opts, doc) {
         resolve(scoped);
       });
     })
-    .catch(function iterateDomCatch(err) { console.error(err); });
+    .catch(function iterateDomCatch(err) {
+      iterateDom(doc, opts, emptyScoped());
+      throw err;
+    });
 }
 
 function extractCss(doc) {
@@ -99,7 +110,15 @@ function replaceSelectors(el, scoped, replaceClassName) {
       }
     }
   });
-  if (replaceClassName) el.className = newClasses.join(' ');
+
+  if (replaceClassName) {
+    const newClassName = newClasses.join(' ');
+    if (newClassName) {
+      el.className = newClassName;
+    } else {
+      el.removeAttribute('class');
+    }
+  }
 
   Object.keys(scoped.elements).forEach(function walkEl(scopeEl) {
     if (scopeEl === name || scopeEl === '*') {
@@ -128,4 +147,14 @@ function replaceSelectors(el, scoped, replaceClassName) {
       el.setAttribute('style', scopedAttr);
     }
   });
+}
+
+function emptyScoped() {
+  return {
+    classes: {},
+    ids: {},
+    elements: {},
+    fontFaces: {},
+    keyframes: {},
+  };
 }

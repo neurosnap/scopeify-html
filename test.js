@@ -20,6 +20,39 @@ const fixtures = [
   'sentry.html',
 ];
 
+test.only('invalid css sync', t => {
+  const html = fs.readFileSync('./fixtures/invalid_css.html');
+  const expectedHtml = fs.readFileSync('./fixtures/invalid_css_expected.html');
+  const actualDoc = jsdom(html);
+
+  const scopeify = scopeifyHtml({ replaceClassName: true });
+  t.throws(scopeify.sync.bind(this, actualDoc));
+
+  const actualHtml = cleanHtml(actualDoc.documentElement.outerHTML);
+  t.equal(actualHtml, cleanHtml(expectedHtml.toString()));
+  t.end();
+});
+
+test('invalid css async', t => {
+  const html = fs.readFileSync('./fixtures/invalid_css.html');
+  const expectedHtml = fs.readFileSync('./fixtures/invalid_css_expected.html');
+  const actualDoc = jsdom(html);
+
+  scopeifyHtml({ replaceClassName: true })
+    .promise(actualDoc)
+    .catch(err => {
+      t.equal('CssSyntaxError', err.name);
+
+      const actualHtml = cleanHtml(actualDoc.documentElement.outerHTML);
+      t.equal(actualHtml, cleanHtml(expectedHtml.toString()));
+      t.end();
+    });
+});
+
+function cleanHtml(str) {
+  return str.replace(/[\r\n\s]+/g, '');
+}
+
 test('emails', t => {
   fixtures.forEach(fname => {
     const html = fs.readFileSync(`./fixtures/${fname}`);
@@ -45,19 +78,22 @@ test('emails async', t => {
   fixtures.forEach(fname => {
     const html = fs.readFileSync(`./fixtures/${fname}`);
     const actualDoc = jsdom(html);
-    scopeifyHtml().promise(actualDoc).then(scopedSelectorMap => {
-      if (!scopedSelectorMap) return;
+    scopeifyHtml()
+      .promise(actualDoc)
+      .then(scopedSelectorMap => {
+        if (!scopedSelectorMap) return;
 
-      const expectedDoc = jsdom(html);
-      const expectedCss = extractCss(expectedDoc);
+        const expectedDoc = jsdom(html);
+        const expectedCss = extractCss(expectedDoc);
 
-      if (!expectedCss) return;
+        if (!expectedCss) return;
 
-      insertCss(expectedCss, expectedDoc);
-      insertCss(getCss(scopedSelectorMap), actualDoc);
+        insertCss(expectedCss, expectedDoc);
+        insertCss(getCss(scopedSelectorMap), actualDoc);
 
-      compare(t, actualDoc, expectedDoc, scopedSelectorMap);
-    }).catch(err => { console.error(err); });
+        compare(t, actualDoc, expectedDoc, scopedSelectorMap);
+      })
+      .catch(err => { console.error(err); });
   });
 
   t.end();
