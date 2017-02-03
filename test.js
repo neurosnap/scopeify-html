@@ -5,7 +5,7 @@ const jsdom = require('jsdom').jsdom;
 const test = require('tape');
 const beautify = require('js-beautify').html;
 
-const scopeifyHtml = require('./');
+const scopeifyHtml = require('./dist');
 
 const extractCss = scopeifyHtml.extractCss;
 const insertCss = scopeifyHtml.insertCss;
