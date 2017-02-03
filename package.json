@@ -1,6 +1,6 @@
 {
   "name": "scopeify-html",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Scopeify CSS in HTML",
   "main": "dist/index.js",
   "repository": "git@github.com:neurosnap/scopeify-html.git",
@@ -22,7 +22,7 @@
   "author": "Eric Bower",
   "license": "MIT",
   "dependencies": {
-    "postcss-scopeify-everything": "^0.3.0"
+    "postcss-scopeify-everything": "0.4.0"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",
