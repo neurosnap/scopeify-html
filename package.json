@@ -35,7 +35,7 @@
     "eslint-plugin-import": "^1.14.0",
     "js-beautify": "^1.6.4",
     "jsdom": "^9.4.2",
-    "juice": "^3.0.0",
+    "juice": "^4.0.2",
     "postcss": "^5.2.4",
     "tape": "^4.6.0",
     "tape-dots": "^1.0.0"

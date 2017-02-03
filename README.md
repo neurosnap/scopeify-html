@@ -1,4 +1,4 @@
-Scopeify HTML
+Scopeify HTML [![Build Status](https://travis-ci.org/neurosnap/scopeify-html.svg?branch=master)](https://travis-ci.org/neurosnap/scopeify-html)
 =============
 
 The goal of this library is to scope all CSS selectors in an HTML document.
@@ -109,10 +109,10 @@ Perf
 
 All speeds are measured in milliseconds (ms).
 
-fixture        | scopeify-html | juice   |
----------------|---------------|---------|
-zillow.html    | 45.784        | 113.385 |
-gog.html       | 52.943        | 113.725 |
-readme_ex.html | 1.400         | 1.595   |
-apple.html     | 55.115        | 38.543  |
-costco.html    | 1.193         | 0.531   |
+fixture        | scopeify-html | juice v4   |
+---------------|---------------|------------|
+zillow.html    | 43.316        | 81.557     |
+gog.html       | 126.074       | 55.336     |
+readme_ex.html | 1.301         | 1.240      |
+apple.html     | 114.198       | 26.452     |
+costco.html    | 1.623         | 0.654      |
