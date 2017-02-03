@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <body>
+
+    <iframe id="iframe" src="./fixtures/costco.html" width="850" height="800" onload="iframeLoaded"></iframe>
+    <div id="scopeify"></div>
+
+    <script src="./dist/index.js"></script>
+    <script>
+      window.addEventListener('message', function(event) {
+        console.log('made it!');
+        var html = event.data;
+        var getCss = scopeifyHtml.getCss;
+        var insertCss = scopeifyHtml.insertCss;
+
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, "text/html");
+        try {
+          var scoped = scopeifyHtml({ replaceClassName: true }).sync(doc);
+          console.log(scoped);
+          var scopedCss = getCss(scoped);
+          insertCss(scopedCss, document);
+
+          document.getElementById("scopeify").innerHTML = doc.body.innerHTML;
+        } catch (err) {
+          console.log(err);
+        }
+      });
+
+      var iframe = document.getElementById("iframe");
+      iframe.onload = iframeLoaded;
+
+      function iframeLoaded() {
+        console.log('iframe loaded!');
+      }
+    </script>
+  </body>
+</html>
