@@ -6,8 +6,6 @@
   "repository": "git@github.com:neurosnap/scopeify-html.git",
   "scripts": {
     "test": "tape-dots test.js",
-    "prepublish": "NODE_ENV=production browserify --standalone scopeify-html -t babelify index.js -o dist/index.js",
-    "clean": "rm dist/*.js",
     "perf": "node perf.js"
   },
   "keywords": [
@@ -22,13 +20,9 @@
   "author": "Eric Bower",
   "license": "MIT",
   "dependencies": {
-    "postcss-scopeify-everything": "0.4.0"
+    "postcss-scopeify-everything": "0.6.0"
   },
   "devDependencies": {
-    "babel-core": "^6.22.1",
-    "babel-preset-es2015": "^6.22.0",
-    "babelify": "^7.3.0",
-    "browserify": "^14.0.0",
     "cheerio": "^0.20.0",
     "eslint": "^3.4.0",
     "eslint-config-airbnb-base": "^5.0.3",

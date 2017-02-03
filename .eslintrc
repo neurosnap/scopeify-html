@@ -14,6 +14,8 @@
     "object-shorthand": 0,
     "prefer-template": 0,
     "import/no-extraneous-dependencies": 0,
-    "strict": 0
+    "strict": 0,
+    "no-var": 0,
+    "vars-on-top": 0
   }
 }

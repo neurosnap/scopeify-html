@@ -1,6 +1,6 @@
 'use strict';
 
-const pse = require('postcss-scopeify-everything');
+var pse = require('postcss-scopeify-everything');
 
 module.exports = scopeifyHtml;
 module.exports.extractCss = extractCss;
@@ -9,7 +9,7 @@ module.exports.getCss = pse.getCss;
 
 function scopeifyHtml(opts) {
   opts = opts || {};
-  const scopeify = pse.api(opts);
+  var scopeify = pse.api(opts);
 
   return {
     sync: scopeifyFnSync.bind(this, scopeify, opts),
@@ -18,16 +18,16 @@ function scopeifyHtml(opts) {
 }
 
 function scopeifyFnSync(scopeify, opts, doc) {
-  const css = extractCss(doc);
+  var css = extractCss(doc);
   if (!css) return null;
 
-  const scoped = scopeify(css).sync();
+  var scoped = scopeify(css).sync();
   iterateDom(doc, opts, scoped);
   return scoped;
 }
 
 function scopeifyFnPromise(scopeify, opts, doc) {
-  const css = extractCss(doc);
+  var css = extractCss(doc);
   if (!css) return Promise.resolve(null);
 
   return scopeify(css)
@@ -47,10 +47,10 @@ function scopeifyFnPromise(scopeify, opts, doc) {
 }
 
 function extractCss(doc) {
-  const stylesEl = doc.querySelectorAll('style');
-  let styles = '';
-  for (let i = 0; i < stylesEl.length; i++) {
-    const child = stylesEl[i];
+  var stylesEl = doc.querySelectorAll('style');
+  var styles = '';
+  for (var i = 0; i < stylesEl.length; i++) {
+    var child = stylesEl[i];
     styles += child.innerHTML;
     child.remove();
   }
@@ -62,7 +62,7 @@ function insertCss(css, doc, container) {
     container = doc.querySelector('head');
   }
 
-  const style = doc.createElement('style');
+  var style = doc.createElement('style');
   style.setAttribute('type', 'text/css');
 
   if (style.styleSheet) {
@@ -76,19 +76,19 @@ function insertCss(css, doc, container) {
 }
 
 function iterateDom(doc, opts, scoped) {
-  const elements = doc.getElementsByTagName('*');
-  for (let i = 0; i < elements.length; i++) {
-    const el = elements[i];
+  var elements = doc.getElementsByTagName('*');
+  for (var i = 0; i < elements.length; i++) {
+    var el = elements[i];
     replaceSelectors(el, scoped, opts.replaceClassName);
   }
 }
 
 function replaceSelectors(el, scoped, replaceClassName) {
   if (typeof replaceClassName === 'undefined') replaceClassName = false;
-  const name = el.tagName.toLowerCase();
-  const style = el.getAttribute('style');
+  var name = el.tagName.toLowerCase();
+  var style = el.getAttribute('style');
 
-  const newClasses = [];
+  var newClasses = [];
   Object.keys(scoped.classes).forEach(function walkClass(scopeClass) {
     if (el.classList.contains(scopeClass)) {
       if (replaceClassName) {
@@ -114,17 +114,17 @@ function replaceSelectors(el, scoped, replaceClassName) {
   });
 
   Object.keys(scoped.fontFaces).forEach(function walkFaces(scopedFace) {
-    const re = new RegExp(scopedFace, 'gi');
+    var re = new RegExp(scopedFace, 'gi');
     if (style && re.test(style)) {
-      const scopedAttr = style.replace(re, scoped.fontFaces[scopedFace]);
+      var scopedAttr = style.replace(re, scoped.fontFaces[scopedFace]);
       el.setAttribute('style', scopedAttr);
     }
   });
 
   Object.keys(scoped.keyframes).forEach(function walkFrames(scopedFrames) {
-    const re = new RegExp(scopedFrames, 'gi');
+    var re = new RegExp(scopedFrames, 'gi');
     if (style && re.test(style)) {
-      const scopedAttr = style.replace(re, scoped.keyframes[scopedFrames]);
+      var scopedAttr = style.replace(re, scoped.keyframes[scopedFrames]);
       el.setAttribute('style', scopedAttr);
     }
   });

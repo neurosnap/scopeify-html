@@ -4,7 +4,7 @@ const fs = require('fs');
 const jsdom = require('jsdom').jsdom;
 const juice = require('juice');
 const cheerio = require('cheerio');
-const scopeifyHtml = require('./dist');
+const scopeifyHtml = require('./index');
 
 const fixtures = [
   'zillow.html',
