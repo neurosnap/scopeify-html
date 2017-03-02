@@ -20,6 +20,28 @@ const fixtures = [
   'sentry.html',
 ];
 
+test('removing unused classnames', t => {
+  t.plan(1);
+  const html = '<!DOCTYPE HTML><html><head></head><body><div class="small"></div></body></html>';
+  const expectedHtml = '<html><head></head><body><div class=""></div></body></html>';
+  const actualDoc = jsdom(html);
+
+  scopeifyHtml({ replaceClassName: true }).sync(actualDoc);
+  t.equal(actualDoc.documentElement.outerHTML, expectedHtml);
+});
+
+test('async removing unused classnames', t => {
+  t.plan(1);
+  const html = '<!DOCTYPE HTML><html><head></head><body><div class="small"></div></body></html>';
+  const expectedHtml = '<html><head></head><body><div class=""></div></body></html>';
+  const actualDoc = jsdom(html);
+
+  scopeifyHtml({ replaceClassName: true }).promise(actualDoc).then(() => {
+    const actualHtml = actualDoc.documentElement.outerHTML;
+    t.equal(actualHtml, expectedHtml);
+  });
+});
+
 test('emails', t => {
   fixtures.forEach(fname => {
     const html = fs.readFileSync(`./fixtures/${fname}`);

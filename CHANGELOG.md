@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.9.0 (03-01-2017)
+------------------
+
+* :bug: `replaceClassName` should work even if there is no `style` tags
+
 0.3.0 (01-07-2016)
 ------------------
 

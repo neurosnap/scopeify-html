@@ -19,7 +19,9 @@ function scopeifyHtml(opts) {
 
 function scopeifyFnSync(scopeify, opts, doc) {
   var css = extractCss(doc);
-  if (!css) return null;
+  if (!css && opts.replaceClassName === false) {
+    return null;
+  }
 
   var scoped = scopeify(css).sync();
   iterateDom(doc, opts, scoped);
@@ -28,7 +30,9 @@ function scopeifyFnSync(scopeify, opts, doc) {
 
 function scopeifyFnPromise(scopeify, opts, doc) {
   var css = extractCss(doc);
-  if (!css) return Promise.resolve(null);
+  if (!css && opts.replaceClassName === false) {
+    return Promise.resolve(null);
+  }
 
   return scopeify(css)
     .promise()
@@ -99,7 +103,10 @@ function replaceSelectors(el, scoped, replaceClassName) {
       }
     }
   });
-  if (replaceClassName) el.className = newClasses.join(' ');
+
+  if (replaceClassName && el.className) {
+    el.className = newClasses.join(' ');
+  }
 
   Object.keys(scoped.elements).forEach(function walkEl(scopeEl) {
     if (scopeEl === name || scopeEl === '*') {
