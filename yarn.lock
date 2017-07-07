@@ -1362,9 +1362,9 @@ postcss-safe-parser@^2.0.0:
   dependencies:
     postcss "^5.2.0"
 
-postcss-scopeify-everything@0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/postcss-scopeify-everything/-/postcss-scopeify-everything-0.7.0.tgz#439e9b94f35428ba097eab3be1a7ac742573f2d6"
+postcss-scopeify-everything@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/postcss-scopeify-everything/-/postcss-scopeify-everything-0.7.1.tgz#eeb74167bb1f6aa6af98b5aefea61c472bae6979"
   dependencies:
     postcss-safe-parser "^2.0.0"
 

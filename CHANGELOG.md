@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.9.1 (07-06-2017)
+------------------
+
+* :bug: upgrade `postcss-scopeify-everything` to fix async parser
+
 0.9.0 (03-01-2017)
 ------------------
 
