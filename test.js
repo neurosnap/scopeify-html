@@ -12,6 +12,7 @@ const insertCss = scopeifyHtml.insertCss;
 const getCss = scopeifyHtml.getCss;
 
 const fixtures = [
+  'big-data.html',
   'amazon.html',
   'zillow.html',
   'gog.html',
