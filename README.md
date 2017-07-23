@@ -12,6 +12,16 @@ Features
 * Keyframes are preserved
 * Can use PostCSS plugins to modify all extracted CSS
 
+Why
+---
+
+The primary reason for creating this library was to render HTML and CSS inside
+a document without that CSS effecting the parent document.  Basically this library
+was created to avoid having to use an iframe.
+
+Other libraries that attempt to solve this problem, such as [juice](https://github.com/Automattic/juice)
+do so by inlining all the CSS, which loses psuedo selectors, keyframes, and font-face names.
+
 How it works
 ------------
 
@@ -103,6 +113,53 @@ console.log(doc.documentElement.outerHTML);
 </html>
 */
 ```
+
+API
+---
+
+### scopeifyHtml
+
+Primary entry point for the library.
+
+#### scopeifyHtml(options: Object)
+
+* replaceClassName (Boolean, default `false`): Removes any classnames not used in CSS
+
+The options passed here will also be passed to [postcss-scopeify-everything](https://github.com/neurosnap/postcss-scopeify-everything#options)
+---
+* plugins (Array, default `[]`): adds PostCSS plugins before the scopeify plugin
+* scopeifyFn (Function): the function that hashes the identifier name
+* scopeifyElFn (Function): the function that converts an element name to a class name
+* asteriskName (Function|String, default `__asterisk`): the string that is used for the wildcard selector `*`
+* ids (Boolean, default `false`): determines whether or not to disable scoping `ids`
+* elements (Boolean, default `false`): determines whether or not to disable scoping `elements`
+* classes (Boolean, default `false`): determines whether or not to disable scoping `classes`
+* keyframes (Boolean, default `false`): determines whether or not to disable scoping `keyframes`
+* fontFaces (Boolean, default `false`): determines whether or not to disable scoping `fontFaces`
+
+### sync
+
+Synchronously processes the CSS and HTML
+
+#### scopeifyHtml().sync(doc: Document) => scopedSelectors
+
+### promise
+
+Asynchronously processes the CSS and HTML
+
+#### scopeifyHtml().promise(doc: Document) => Promise(scopedSelectors)
+
+### getCss
+
+Returns the CSS from scopeify
+
+#### scopeifyHtml.getCss(scopedSelectors) => string
+
+### insertCss
+
+Inserts CSS into document
+
+#### scopeify.insertCss(css: string, doc: Document) => undefined
 
 Perf
 ----
