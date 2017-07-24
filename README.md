@@ -11,6 +11,7 @@ Features
 * Fonts are scoped and preserved
 * Keyframes are scoped and preserved
 * Can use PostCSS plugins to modify all extracted CSS
+* Ability to do aditional processing with PostCSS
 
 Why
 ---
@@ -25,7 +26,11 @@ do so by inlining all the CSS, which loses pseudo selectors, keyframes, and font
 How it works
 ------------
 
-We iterate over all the CSS rules within an HTML document and scope all of them.  Then we iterate
+The core functionality of this library comes from [PostCSS](https://github.com/postcss/postcss).
+We are using [postcss-scopeify-everything](https://github.com/neurosnap/postcss-scopeify-everything)
+to perform all the selector scope transformations.
+
+We iterate over all the CSS rules within an HTML document and scope all of them using a hash of the content.  Then we iterate
 over all the DOM elements in the document and apply the newly scoped selectors.  Then we return the
 document and the CSS separated.
 
@@ -36,10 +41,6 @@ document and the CSS separated.
   * Keyframe names, and
   * Font-face names
 * Convert all HTML selectors into scoped selectors
-
-The primary reason why this library was created was to have the ability to render email within an
-HTML document without worrying about global CSS selectors in the child document affecting the parent
-document.
 
 Usage
 -----
