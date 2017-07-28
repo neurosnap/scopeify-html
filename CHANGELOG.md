@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.10.0 (07-28-2017)
+-------------------
+
+* :bug: `postcss-scopeify-everything` will sometimes return a `scope.classes` key with multiple classes and we were not properly handling it
+
 0.9.1 (07-06-2017)
 ------------------
 
