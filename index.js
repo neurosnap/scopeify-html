@@ -94,6 +94,26 @@ function replaceSelectors(el, scoped, replaceClassName) {
 
   var newClasses = [];
   Object.keys(scoped.classes).forEach(function walkClass(scopeClass) {
+    var classes = scopeClass.split(' ');
+    // detect if a scopedClass is multiple classes and
+    // if so then add the collective class to the element
+    if (classes.length > 1) {
+      var classesNotFound = classes.filter((c) => !el.classList.contains(c));
+
+      if (classesNotFound.length > 0) {
+        return;
+      }
+
+      if (replaceClassName) {
+        newClasses.push(scoped.classes[scopeClass]);
+      } else {
+        classes.forEach(c => el.classList.remove(c));
+        el.classList.add(scoped.classes[scopeClass]);
+      }
+
+      return;
+    }
+
     if (el.classList.contains(scopeClass)) {
       if (replaceClassName) {
         newClasses.push(scoped.classes[scopeClass]);
