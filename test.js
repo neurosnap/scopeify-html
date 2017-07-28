@@ -42,6 +42,30 @@ test('async removing unused classnames', t => {
   });
 });
 
+test('when replaceClassName is `true` should process a class key with multiple classes', t => {
+  t.plan(1);
+  const html = '<!DOCTYPE HTML><html><head><style>div[class="cell center"] { color: red; }'
+    + '</style></head><body><div class="cell center nice"></div></body></html>';
+  const expectedHtml = '<html><head></head><body><div class="cell_center_ycdMX div_el_ycdMX">'
+    + '</div></body></html>';
+  const actualDoc = jsdom(html);
+
+  scopeifyHtml({ replaceClassName: true }).sync(actualDoc);
+  t.equal(actualDoc.documentElement.outerHTML, expectedHtml);
+});
+
+test('when replaceClassName is `false` should process a class key with multiple classes', t => {
+  t.plan(1);
+  const html = '<!DOCTYPE HTML><html><head><style>div[class="cell center"] { color: red; }'
+    + '</style></head><body><div class="cell center nice"></div></body></html>';
+  const expectedHtml = '<html><head></head><body><div class="nice cell_center_ycdMX div_el_ycdMX">'
+    + '</div></body></html>';
+  const actualDoc = jsdom(html);
+
+  scopeifyHtml({ replaceClassName: false }).sync(actualDoc);
+  t.equal(actualDoc.documentElement.outerHTML, expectedHtml);
+});
+
 test('emails', t => {
   fixtures.forEach(fname => {
     const html = fs.readFileSync(`./fixtures/${fname}`);
