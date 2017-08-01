@@ -98,7 +98,9 @@ function replaceSelectors(el, scoped, replaceClassName) {
     // detect if a scopedClass is multiple classes and
     // if so then add the collective class to the element
     if (classes.length > 1) {
-      var classesNotFound = classes.filter((c) => !el.classList.contains(c));
+      var classesNotFound = classes.filter(function filterClasses(c) {
+        return !el.classList.contains(c);
+      });
 
       if (classesNotFound.length > 0) {
         return;
